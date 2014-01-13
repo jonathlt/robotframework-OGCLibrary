@@ -12,24 +12,24 @@
 #  limitations under the License.
 
 
-"""Setup script for OGCLibrary for Robot Framework"""
+"""Setup script for OGCServiceLibrary for Robot Framework"""
 
 from distutils.core import setup
 
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from SpatialDataLibrary import __version__
+from OGCServiceLibrary import __version__
 
 def main():
-    setup(name         = 'robotframework-ogclibrary',
+    setup(name         = 'robotframework-ogcservicelibrary',
           version      = __version__,
           description  = 'OGC Testing Keywords for Robot Framework',
           author       = 'Astun Technology',
           author_email = 'github@astuntechnology.com',
-          url          = 'https://github.com/AstunTechnology/Robotframework-OGCLibrary',
+          url          = 'https://github.com/AstunTechnology/Robotframework-OGCServiceLibrary',
           package_dir  = { '' : 'src'},
-          packages     = ['OGCLibrary']
+          packages     = ['OGCServiceLibrary']
           )
 
 

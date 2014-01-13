@@ -71,7 +71,7 @@ class OGCServiceLibrary(RequestsLibrary):
         """
         Compares two values as strings, fail if not equal, example:
         | Result should be | my_expected_result |
-        
+
         """
         if str(self._result) != str(expected):
             raise AssertionError("%s == %s" % (self._result, expected))
