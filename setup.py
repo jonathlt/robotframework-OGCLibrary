@@ -19,11 +19,9 @@ from distutils.core import setup
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from OGCServiceLibrary import __version__
-
 def main():
     setup(name         = 'robotframework-ogcservicelibrary',
-          version      = __version__,
+          version      = '1.0',
           description  = 'OGC Testing Keywords for Robot Framework',
           author       = 'Astun Technology',
           author_email = 'github@astuntechnology.com',

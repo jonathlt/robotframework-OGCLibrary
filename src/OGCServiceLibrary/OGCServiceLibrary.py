@@ -10,19 +10,18 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from owslib.wfs import WebFeatureService
+from WFSLayer import WFSLayer
 from RequestsLibrary import RequestsLibrary
 
-__version__ = '0.1'
 
-class OGCServiceLibrary(RequestsLibrary):
+class OGCServiceLibrary(RequestsLibrary, WFSLayer):
 
     def __init__(self):
         super(OGCServiceLibrary,self).__init__()
         self._result = 0
         self._url = ''
-        self._service_type = ''
         self._ogc_version = '1.1.0'
+        __version__ = '1.0'
 
     def connect_to_url(self,url):
         """
@@ -34,38 +33,6 @@ class OGCServiceLibrary(RequestsLibrary):
         resp = RequestsLibrary.get(self,"URL","/")
         if str(resp.status_code) != "200":
             raise AssertionError("url: %s Status %s Can't connect" % (url,resp.status_code))
-
-    def set_wfs_service(self,url):
-        """
-        Set up parameters for a wfs service, example:
-        Only needs to be called once in the suite if the url is not changing
-        | Set wfs service | my_test_url |
-
-        """
-        self._url = url
-        self._service_type = 'wfs'
-
-    def get_number_of_layers(self):
-        """
-        Get a count of the layers.
-        Fail if the layers returned is not equal to the  expected, example:
-        | Get number of layers | expected_number_of_layers |
-
-        """
-        if self._service_type == 'wfs':
-            wfs = WebFeatureService(self._url, version=self._ogc_version)
-            self._result = len(wfs.contents)
-
-    def check_for_layer(self,layer_name):
-        """
-        Checks for a layer of a given name.
-        Fail if the layer name is not found
-        | Check for layer | my_layer_name |
-
-        """
-        if self._service_type == 'wfs':
-            wfs = WebFeatureService(self._url, version=self._ogc_version)
-            self._result = layer_name in wfs.contents.keys()
 
     def result_should_be(self,expected=0):
         """
