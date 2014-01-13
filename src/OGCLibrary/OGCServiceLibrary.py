@@ -1,6 +1,19 @@
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 from owslib.wfs import WebFeatureService
 from RequestsLibrary import RequestsLibrary
 
+__version__ = '0.1'
 
 class OGCServiceLibrary(RequestsLibrary):
 
@@ -12,10 +25,10 @@ class OGCServiceLibrary(RequestsLibrary):
         self._ogc_version = '1.1.0'
 
     def connect_to_url(self,url):
-        """ Check that we can connect to a given url
-
-        :param url: string -- The url we wish to connect to
-        :return: None, raises an assertion error if the return status code is not 200
+        """
+        Check that we can connect to a given url
+        Test framework errors if failure (i.e. NOT response 200), example:
+        | Connect to url | my_test_url |
         """
         RequestsLibrary.create_session(self,"URL",url)
         resp = RequestsLibrary.get(self,"URL","/")
@@ -23,18 +36,20 @@ class OGCServiceLibrary(RequestsLibrary):
             raise AssertionError("url: %s Status %s Can't connect" % (url,resp.status_code))
 
     def set_wfs_service(self,url):
-        """ Set up parameters for a wfs service
-        :param url: The url of the wfs service
-        :return: None, sets up url and the service type
+        """
+        Set up parameters for a wfs service, example:
+        Only needs to be called once in the suite if the url is not changing
+        | Set wfs service | my_test_url |
 
         """
         self._url = url
         self._service_type = 'wfs'
 
     def get_number_of_layers(self):
-        """Get a count of the layers.
-
-        :returns: int -- the number of layers to the _result variable
+        """
+        Get a count of the layers.
+        Fail if the layers returned is not equal to the  expected, example:
+        | Get number of layers | expected_number_of_layers |
 
         """
         if self._service_type == 'wfs':
@@ -42,9 +57,10 @@ class OGCServiceLibrary(RequestsLibrary):
             self._result = len(wfs.contents)
 
     def check_for_layer(self,layer_name):
-        """Checks for a layer of a given name.
-        :param layer_name: layer to search for
-        :returns: int -- the number of layers to the _result variable
+        """
+        Checks for a layer of a given name.
+        Fail if the layer name is not found
+        | Check for layer | my_layer_name |
 
         """
         if self._service_type == 'wfs':
@@ -52,10 +68,10 @@ class OGCServiceLibrary(RequestsLibrary):
             self._result = layer_name in wfs.contents.keys()
 
     def result_should_be(self,expected=0):
-        """ Compares two values as strings
-        :param expected: the expected result
-        :return: None, Assertion error raise if expected not the same as result
-
+        """
+        Compares two values as strings, fail if not equal, example:
+        | Result should be | my_expected_result |
+        
         """
         if str(self._result) != str(expected):
             raise AssertionError("%s == %s" % (self._result, expected))
